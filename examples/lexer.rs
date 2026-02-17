@@ -1,4 +1,4 @@
-use zcf::lex::*;
+use zcf::{lex::*, utils::*};
 
 macro_rules! fatal {
     ($($arg:tt)+) => {{
