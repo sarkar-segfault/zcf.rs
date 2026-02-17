@@ -2,11 +2,10 @@
 extern crate alloc;
 
 pub mod lex;
-pub mod utils;
 pub mod parse;
+pub mod utils;
 
 pub use utils::Source;
-pub use lex::lex;
 
 #[cfg(test)]
 mod tests;
