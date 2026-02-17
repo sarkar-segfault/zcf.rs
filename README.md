@@ -1,0 +1,2 @@
+# zcf
+Zenful Configuration Format
