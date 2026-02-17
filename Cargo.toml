@@ -1,0 +1,20 @@
+[package]
+name = "zcf"
+edition = "2024"
+version = "1.0.0"
+authors = ["sarkar-segfault <adhritsarkar@proton.me>"]
+description = "Zenful Configuration Format"
+license = "MIT"
+repository = "https://github.com/sarkar-segfault/zcf"
+homepage = "https://crates.io/crates/zcf"
+documentation = "https://docs.rs/zcf"
+readme = "README.md"
+keywords = ["markup", "config", "format", "parser", "serde"]
+categories = ["parser-implementations", "text-processing", "config", "no-std"]
+
+[features]
+default = ["serde"]
+serde = ["dep:serde"]
+
+[dependencies]
+serde = { version = "1.0.228", optional = true, default-features = false }
