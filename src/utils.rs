@@ -106,12 +106,15 @@ pub enum LexingError {
     UnterminatedString,
 }
 
+#[cfg(feature = "parse")]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ParsingError {}
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ErrorKind {
     Lexing(LexingError),
+
+    #[cfg(feature = "parse")]
     Parsing(ParsingError),
 }
 
@@ -128,6 +131,7 @@ impl fmt::Display for ErrorKind {
                     LexingError::UnterminatedString =>
                         "encountered unterminated string during lexing",
                 },
+                #[cfg(feature = "parse")]
                 Self::Parsing(p) => match p {
                     _ => "",
                 },
@@ -173,6 +177,7 @@ impl<'a> Error<'a> {
         Self::new(ErrorKind::Lexing(kind), span, src)
     }
 
+    #[cfg(feature = "parse")]
     pub fn parsing(kind: ParsingError, span: Span, src: &'a Source<'a>) -> Self {
         Self::new(ErrorKind::Parsing(kind), span, src)
     }

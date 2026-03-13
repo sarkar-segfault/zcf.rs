@@ -2,8 +2,13 @@ use alloc::collections::BTreeMap;
 use alloc::string::String;
 use alloc::vec::Vec;
 
+use crate::Source;
+use crate::lex::LexemeStream;
+use crate::utils::Result;
+
 pub type Dictionary = BTreeMap<String, Value>;
 
+#[derive(Clone, PartialEq, Debug)]
 pub enum Value {
     Dictionary(Dictionary),
     Sequence(Vec<Value>),
@@ -13,4 +18,12 @@ pub enum Value {
     Bool(bool),
 }
 
-pub struct Document(Vec<Dictionary>);
+pub type Document = Vec<Dictionary>;
+
+pub fn parse<'a>(_src: &'a Source, _lexemes: &'a mut LexemeStream) -> Result<'a, Document> {
+    let doc = Document::default();
+
+    while let Some(_lexeme) = _lexemes.pop_front() {}
+
+    Ok(doc)
+}
