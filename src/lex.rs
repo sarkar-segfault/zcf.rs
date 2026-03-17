@@ -1,4 +1,4 @@
-use crate::utils::*;
+use crate::utils::{Error, LexingError, Result, Source, Span};
 use alloc::{collections::vec_deque::VecDeque, string::String};
 
 #[derive(Debug, Clone, PartialEq)]

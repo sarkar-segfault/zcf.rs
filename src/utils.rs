@@ -1,5 +1,5 @@
 use alloc::string::String;
-use core::{fmt, str};
+use core::{arch::x86_64::_mm_maskz_broadcast_i32x2, fmt, str};
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Clone, Copy)]
 pub struct Location {
@@ -108,7 +108,9 @@ pub enum LexingError {
 
 #[cfg(feature = "parse")]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum ParsingError {}
+pub enum ParsingError {
+    InvalidTopLevel,
+}
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ErrorKind {
@@ -120,23 +122,24 @@ pub enum ErrorKind {
 
 impl fmt::Display for ErrorKind {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(
-            f,
-            "{}",
-            match self {
-                Self::Lexing(l) => match l {
-                    LexingError::MalformedNumber => "encountered malformed number during lexing",
-                    LexingError::UnrecognizedToken =>
-                        "encountered unrecognized token during lexing",
-                    LexingError::UnterminatedString =>
-                        "encountered unterminated string during lexing",
+        let (msg, ctx) = match self {
+            Self::Lexing(l) => (
+                match l {
+                    LexingError::MalformedNumber => "encountered malformed number",
+                    LexingError::UnrecognizedToken => "encountered unrecognized token",
+                    LexingError::UnterminatedString => "encountered unterminated string",
                 },
-                #[cfg(feature = "parse")]
-                Self::Parsing(p) => match p {
-                    _ => "",
+                " (during lexing)",
+            ),
+            #[cfg(feature = "parse")]
+            Self::Parsing(p) => (
+                match p {
+                    ParsingError::InvalidTopLevel => "encountered invalid top level token",
                 },
-            }
-        )
+                " (during parsing)",
+            ),
+        };
+        write!(f, "{}{}", msg, ctx)
     }
 }
 
